@@ -3,7 +3,7 @@ echo "Script is running"
 
 # RabbitMQ credentials
 RABBITMQ_CREDENTIALS="myuser:mypassword"
-RABBITMQ_VHOST="myvhost"
+RABBITMQ_VHOST="my_vhost"
 
 # RabbitMQ server address
 RABBITMQ_ENDPOINT="http://localhost:15672/api"
@@ -26,7 +26,7 @@ publish_to_queue() {
         # Quote the message_content as a JSON string
         payload='{"properties":{},"routing_key":"'"${routing_key}"'","payload":"'${message_content}'","payload_encoding":"string"}'
         curl -i -u ${RABBITMQ_CREDENTIALS} -H "content-type:application/json" \
-            -XPOST ${RABBITMQ_ENDPOINT}/exchanges/${RABBITMQ_VHOST}/myexchange/publish \
+            -XPOST ${RABBITMQ_ENDPOINT}/exchanges/${RABBITMQ_VHOST}/my_exchange/publish \
             -d "${payload}"
     done
 }

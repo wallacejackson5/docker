@@ -72,3 +72,11 @@ services:
       - 'ADMINER_PLUGINS=tables-filter tinymce'
     ports:
       - 8080:8080
+
+  publish:
+    image: python:3.8.18
+    container_name: ${CONTAINER_NAME_PYTHON}
+    working_dir: /app
+    volumes:
+      - ./rabbitmq/publish:/app
+    command: sh -c "tail -f /dev/null"
