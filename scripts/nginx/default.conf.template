@@ -1,0 +1,14 @@
+server {
+    listen ${NGINX_PORT};
+    server_name ${NGINX_HOST};
+    root /usr/share/nginx/html;
+    add_header Content-Type application/json;
+
+    location / {
+        index response.json;
+    }
+
+    location /error {
+        index 500.json;
+    }
+}
