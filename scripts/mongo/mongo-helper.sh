@@ -6,7 +6,7 @@ source .env
 # MongoDB server address
 MONGODB_HOST=localhost
 MONGODB_PORT=27017
-DATABASE_NAME=mydatabase
+DATABASE_NAME=my_database
 COLLECTION_NAME=book
 USERNAME=root
 PASSWORD=secret

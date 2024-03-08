@@ -1,9 +1,9 @@
 {
   "rabbitmq": {
     "host": "rabbitmq",
-    "queue": "myqueue1",
+    "queue": "my_queue",
     "vhost": "my_vhost",
     "exchange": "my_exchange",
-    "routing_key": "key1"
+    "routing_key": "key"
   }
 }

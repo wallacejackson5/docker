@@ -1,5 +1,5 @@
 // Use the mydatabase database
-db = db.getSiblingDB('mydatabase');
+db = db.getSiblingDB('my_database');
 
 // Create a collection and insert some data
 db.book.insertMany([

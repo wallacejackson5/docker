@@ -26,6 +26,7 @@ services:
       - "15672:15672"
     volumes:
       - ./rabbitmq/init-rabbitmq.sh:/docker-entrypoint-initdb.d/init-rabbitmq.sh:ro
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
     env_file:
       - .env
 
@@ -33,7 +34,7 @@ services:
     image: 'mongo:7.0.5'
     container_name: ${CONTAINER_NAME_MONGODB}
     environment:
-      - 'MONGO_INITDB_DATABASE=mydatabase'
+      - 'MONGO_INITDB_DATABASE=my_database'
       - 'MONGO_INITDB_ROOT_PASSWORD=secret'
       - 'MONGO_INITDB_ROOT_USERNAME=root'
     ports:
@@ -59,8 +60,8 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - 'POSTGRES_USER=myuser'
-      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_USER=my_user'
+      - 'POSTGRES_DB=my_database'
       - 'POSTGRES_PASSWORD=secret'
     volumes:
       - ./postgres/init-postgres.sql:/docker-entrypoint-initdb.d/init.sql

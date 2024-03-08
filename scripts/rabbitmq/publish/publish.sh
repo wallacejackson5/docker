@@ -2,7 +2,9 @@
 echo "Script is running"
 
 # RabbitMQ credentials
-RABBITMQ_CREDENTIALS="myuser:mypassword"
+RABBITMQ_CREDENTIALS="my_user:my_password"
+RABBITMQ_EXCHANGE="my_exchange"
+RABBITMQ_ROUTING_KEY="key"
 RABBITMQ_VHOST="my_vhost"
 
 # RabbitMQ server address
@@ -26,13 +28,12 @@ publish_to_queue() {
         # Quote the message_content as a JSON string
         payload='{"properties":{},"routing_key":"'"${routing_key}"'","payload":"'${message_content}'","payload_encoding":"string"}'
         curl -i -u ${RABBITMQ_CREDENTIALS} -H "content-type:application/json" \
-            -XPOST ${RABBITMQ_ENDPOINT}/exchanges/${RABBITMQ_VHOST}/my_exchange/publish \
+            -XPOST ${RABBITMQ_ENDPOINT}/exchanges/${RABBITMQ_VHOST}/${RABBITMQ_EXCHANGE}/publish \
             -d "${payload}"
     done
 }
 
 while true; do
     messageQuantity=$((RANDOM % 100))
-    publish_to_queue "key1" 100
-    publish_to_queue "key2" 50
+    publish_to_queue "${RABBITMQ_ROUTING_KEY}" 100
 done
