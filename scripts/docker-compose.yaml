@@ -1,21 +1,6 @@
 version: '3.8'
 
 services:
-  web:
-    image: 'nginx:alpine3.18-perl'
-    container_name: ${CONTAINER_NAME_NGINX}
-    stdin_open: true
-    tty: true
-    environment:
-      - NGINX_HOST=example.com
-      - NGINX_PORT=80
-    ports:
-      - "9090:80"
-    volumes:
-      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template
-      - ./nginx/response.json:/usr/share/nginx/html/response.json
-      - ./nginx/500.json:/usr/share/nginx/html/error/500.json
-
   rabbitmq:
     image: rabbitmq:3.10-management
     container_name: ${CONTAINER_NAME_RABBITMQ}
@@ -24,9 +9,13 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      retries: 5
     volumes:
-      - ./rabbitmq/init-rabbitmq.sh:/docker-entrypoint-initdb.d/init-rabbitmq.sh:ro
-      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+      - ./rabbitmq/init-rabbitmq.sh:/docker-entrypoint-initdb.d/init-rabbitmq.sh
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
     env_file:
       - .env
 
@@ -74,6 +63,21 @@ services:
     ports:
       - 8080:8080
 
+  web:
+    image: 'nginx:alpine3.18-perl'
+    container_name: ${CONTAINER_NAME_NGINX}
+    stdin_open: true
+    tty: true
+    environment:
+      - NGINX_HOST=example.com
+      - NGINX_PORT=80
+    ports:
+      - "9090:80"
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template
+      - ./nginx/response.json:/usr/share/nginx/html/response.json
+      - ./nginx/500.json:/usr/share/nginx/html/error/500.json
+
   publish:
     image: python:3.8.18
     container_name: ${CONTAINER_NAME_PYTHON}
@@ -81,3 +85,17 @@ services:
     volumes:
       - ./rabbitmq/publish:/app
     command: sh -c "tail -f /dev/null"
+  configurator:
+    image: docker:25.0-dind
+    container_name: ${CONTAINER_NAME_DOCKER}
+    stdin_open: true
+    tty: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker/docker-entrypoint.sh:/docker-entrypoint.sh:ro
+    depends_on:
+      - rabbitmq
+      - publish
+    command: sh -c "./docker-entrypoint.sh"
+    env_file:
+      - .env

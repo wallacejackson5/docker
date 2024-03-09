@@ -1,5 +1,6 @@
 #!/bin/bash
-sleep 5
+set -eo pipefail
+shopt -s nullglob
 
 # RabbitMQ configuration commands
 rabbitmqctl import_definitions /etc/rabbitmq/definitions.json

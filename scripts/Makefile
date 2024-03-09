@@ -2,14 +2,7 @@
 include .env
 
 up:
-	@docker-compose up --remove-orphans --detach &&\
-		sleep 10 &&\
-		make setUp
-
-# SetUp
-setUp:
-	@docker exec -it ${CONTAINER_NAME_RABBITMQ} /docker-entrypoint-initdb.d/init-rabbitmq.sh;
-	@docker exec -it ${CONTAINER_NAME_PYTHON} pip install -r requirements.txt;
+	@docker-compose up --remove-orphans --detach
 
 #RabbitMQ Helper
 publish:
