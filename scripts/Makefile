@@ -2,7 +2,7 @@
 include .env
 
 up:
-	@docker-compose up --remove-orphans --detach
+	@docker-compose up --remove-orphans --detach --force-recreate
 
 #RabbitMQ Helper
 publish:
