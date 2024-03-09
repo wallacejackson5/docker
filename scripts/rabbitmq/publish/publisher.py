@@ -11,10 +11,19 @@ class RabbitMQPublisher:
         self._channel = None
 
     def connect(self):
-        parameters = pika.ConnectionParameters(host=self.host, virtual_host=self.vhost)
-        self._connection = pika.BlockingConnection(parameters)
+        self._connection = self._get_connection()
         self._channel = self._connection.channel()
         self._channel.queue_declare(queue=self.queue, durable=False)
+
+    def _get_connection(self):
+        parameters = pika.ConnectionParameters(host=self.host, virtual_host=self.vhost)
+        try:
+            connection = pika.BlockingConnection(parameters)
+        except:
+            parameters = pika.ConnectionParameters(host="localhost", virtual_host=self.vhost)
+            connection = pika.BlockingConnection(parameters)
+        return connection
+
 
     def publish_message(self, message, content_type='application/json'):
         if not self._channel:

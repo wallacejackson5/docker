@@ -21,6 +21,12 @@ def get_payload(index):
     mock = get_mock(scheme, id=index)
     return get_dump(mock)
 
+def define_root():
+    try:
+        os.chdir("/app/publish")
+    except:
+        os.chdir(".")
+
 if __name__ == '__main__':
-    os.chdir("/app/publish")
+    define_root()
     main()
