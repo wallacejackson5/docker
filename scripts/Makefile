@@ -6,7 +6,7 @@ up:
 
 #RabbitMQ Helper
 publish:
-	@docker exec -it ${CONTAINER_NAME_PYTHON} python3 main.py;
+	@docker exec -it ${CONTAINER_NAME_PYTHON} python3 publish/main.py;
 
 #Container helper
 stop:

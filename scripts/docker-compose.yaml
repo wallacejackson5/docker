@@ -83,7 +83,7 @@ services:
     container_name: ${CONTAINER_NAME_PYTHON}
     working_dir: /app
     volumes:
-      - ./rabbitmq/publish:/app
+      - ./rabbitmq/publish:/app/publish
     depends_on:
       - rabbitmq
     command: sh -c "tail -f /dev/null"

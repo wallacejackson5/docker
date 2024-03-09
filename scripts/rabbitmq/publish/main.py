@@ -3,6 +3,7 @@ from load import get_config
 from load import get_json
 from load import get_dump
 from mock import get_mock
+import os
 
 def main():
     config = get_config()
@@ -21,4 +22,5 @@ def get_payload(index):
     return get_dump(mock)
 
 if __name__ == '__main__':
+    os.chdir("/app/publish")
     main()

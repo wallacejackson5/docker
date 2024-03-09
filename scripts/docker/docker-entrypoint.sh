@@ -1,7 +1,10 @@
 #!/bin/sh
 tail -f /dev/null &
 
-docker exec -it ${CONTAINER_NAME_PYTHON} pip install -r requirements.txt;
+docker exec -it ${CONTAINER_NAME_PYTHON} sh -c 'for req_file in $(find . -name "requirements.txt"); do
+  req_dir=$(dirname "$req_file")
+  pip install -r "$req_file"
+done'
 
 until nc -z -v -w30 rabbitmq 5672; do
   sleep 3
