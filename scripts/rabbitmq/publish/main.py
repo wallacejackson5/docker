@@ -1,10 +1,10 @@
 from publisher import RabbitMQPublisher
-from generator.load import get_config
+from generator.load import get_json
 from generator.payload import get_payload
 import os
 
 def main():
-    config = get_config()
+    config = get_json("resources/config.json")
     publisher = RabbitMQPublisher(config)
     publisher.connect()
 
