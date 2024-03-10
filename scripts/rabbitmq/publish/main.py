@@ -1,8 +1,6 @@
 from publisher import RabbitMQPublisher
-from load import get_config
-from load import get_json
-from load import get_dump
-from mock import get_mock
+from generator.load import get_config
+from generator.payload import get_payload
 import os
 
 def main():
@@ -15,11 +13,6 @@ def main():
         publisher.publish_message(payload)
 
     publisher.close()
-
-def get_payload():
-    scheme = get_json('payload.json')
-    mock = get_mock(scheme)
-    return get_dump(mock)
 
 def define_root():
     try:

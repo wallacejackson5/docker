@@ -1,34 +1,32 @@
 import random
 import string
 
-def get_mock(data, **kwargs):
+def get_mock(data):
     mock = {}
     for key, value in data.items():
-        if not key in kwargs:
-            mock[key] = value
-            mock = _get_data(key, value, mock)
+        mock[key] = value
+        mock = _get_data(key, value, mock)
     return mock
 
-def _get_data(key, value, data):
+def _get_data(key, value, mock):
     should_keep_value = _should_keep_value(key)
 
     if should_keep_value:
         new_key = key[2:]
-        data[new_key] = data[key]
-        del data[key]
+        mock[new_key] = mock[key]
+        del mock[key]
     else:
         if isinstance(value, int):
-            data[key] = random.randint(0, 1000)
+            mock[key] = random.randint(0, 1000)
         elif isinstance(value, str):
-            data[key] = ''.join(random.choice(string.ascii_letters) for _ in range(30))  # Random string
+            mock[key] = ''.join(random.choice(string.ascii_letters) for _ in range(30))  # Random string
         elif isinstance(value, float):
-            data[key] = random.uniform(0.0, 100.0)
+            mock[key] = random.uniform(0.0, 100.0)
         elif isinstance(value, list):
-            data[key] = generate_random_list(value)
+            mock[key] = generate_random_list(value)
         elif isinstance(value, dict):
-            data[key] = get_mock(value.copy())
-
-    return data
+            mock[key] = get_mock(value.copy())
+    return mock
 def _should_keep_value(key):
     if key.startswith("__"):
         return True
