@@ -11,14 +11,14 @@ def main():
     publisher.connect()
 
     for i in range(5):
-        payload = get_payload(i)
+        payload = get_payload()
         publisher.publish_message(payload)
 
     publisher.close()
 
-def get_payload(index):
+def get_payload():
     scheme = get_json('payload.json')
-    mock = get_mock(scheme, id=index)
+    mock = get_mock(scheme)
     return get_dump(mock)
 
 def define_root():
